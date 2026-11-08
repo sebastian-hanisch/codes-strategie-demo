@@ -1,7 +1,6 @@
 # Codes als Strategie: Hüte, Summen und das Schachbrett – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-codes-strategie-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-codes-strategie-demo.streamlit.app/)**
 
 Zweites Stück der Reihe **Teamrätsel** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“. Ein Team hat **ein gemeinsames Ziel**, darf **vorher eine Strategie absprechen**, und handelt dann mit **beschränkter Information** (keine Verständigung währenddessen). Diese Demo zeigt **vier bekannte Rätsel mit demselben Trick**: eine **Prüfsumme** (eine Summe modulo q, bei zwei Farben das XOR) ordnet jedem Mitglied einen Wert zu, den es aus dem Gesehenen ausrechnen kann. Die Kulissen: **Hüte gleichzeitig** (raten oder passen; Parität bei drei Spielern, Hamming-Code bei sieben), **Hüte in einer Reihe** (die Summe wird angesagt), **Summen-Hüte** (genau ein Tipp richtig) und das **Schachbrett** (ein umgedrehtes Feld überträgt sechs Bit). Es gibt keine Kulisse aus der Logistik; es sind Lehrbuch-Rätsel mit festen Annahmen.
 
