@@ -28,7 +28,7 @@ def verdict_e1(r: dict) -> tuple[str, str]:
 
 # --- E2: Sichtgraph ---------------------------------------------------------------------------------------------------------------------------
 def has_triangle(nbrs: list[list[int]]) -> bool:
-    """Gibt es drei Spieler, die einander alle sehen (und deshalb die Paritätsstrategie für drei Hüte spielen könnten)?"""
+    """Gibt es drei Spieler, die einander alle sehen (und deshalb die Strategie für drei Hüte, den Hamming-Code der Länge 3, spielen könnten)?"""
     n = len(nbrs)
     sets = [set(nb) for nb in nbrs]
     return any(b in sets[a] and c in sets[a] and c in sets[b] and a in sets[b] and a in sets[c] and b in sets[c]
@@ -51,7 +51,7 @@ def verdict_e2(r: dict) -> tuple[str, str]:
     else:
         head += f" (Zeitgrenze erreicht: gefunden {wins} von {total}, die Schranke des Lösers liegt bei {r['bound']}; **nicht** als optimal bewiesen)."
     if r["triangle"]:
-        tail = " Der Graph enthält drei Spieler, die einander alle sehen: Sie spielen die Paritätsstrategie, alle anderen passen, das gibt mindestens 3/4."
+        tail = " Der Graph enthält drei Spieler, die einander alle sehen: Sie spielen die Strategie für drei Hüte (Hamming-Code der Länge 3), alle anderen passen, das gibt mindestens 3/4."
     else:
         tail = f" Kein Dreieck im Graphen. Ein einzelner Spieler, der immer »0« sagt, gewinnt ohnehin {total // 2} von {total}."
     return ("info" if r["status"] == "OPTIMAL" else "warning"), head + tail

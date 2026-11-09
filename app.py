@@ -91,13 +91,26 @@ st.markdown(
 **Prüfsumme** (eine Summe modulo q, bei zwei Farben das XOR), und jedes Mitglied rechnet aus dem, was es sieht, den einen Wert für das Unsichtbare aus, der zu seiner Zielsumme passt.
 Die Frage ist jeweils: **Was bringt die Absprache gegenüber dem Raten, wo liegt eine bewiesene Grenze, und wer muss wen sehen?**
 
-Die Rätsel sind **Lehrbuchwissen**; eigen ist hier der Vergleich der vier Kulissen und dass jede Zahl ausgezählt oder bewiesen ist (ausgenommen die ausdrücklich genannten Stichproben: 64-Felder-Brett, lange Reihen; die Aufzählung aller Strategien, das ganzzahlige Modell und die Zählargumente sind Aufzählung, Löser bzw. Beweis). Abgrenzung: Die Reihe Koordinationsspiele
+Die Rätsel sind **Lehrbuchwissen**; eigen ist hier der Vergleich der vier Kulissen und dass jede Zahl ausgezählt oder bewiesen ist (ausgenommen die ausdrücklich genannten Stichproben: 64-Felder-Brett, lange Reihen, und der Wert der besten Strategie bei n = 8, ein Löserergebnis, dessen Optimalität die Tests nicht nachrechnen; die Aufzählung aller Strategien, das ganzzahlige Modell und die Zählargumente sind Aufzählung, Löser bzw. Beweis). Abgrenzung: Die Reihe Koordinationsspiele
 (`koordinationsspiel-demo` u. a.) fragt nach Eigennutz und Gleichgewichten, hier haben alle **dasselbe Ziel** und es geht um Strategie bei begrenzter Information. **Modelle**: gleichverteilte Hutfarben,
 Absprache vorab, keine Verständigung währenddessen; keine Aussage über Menschen.
 
-Weiter unten: die Abschnitte **🔬 Experimente**, **🚧 Wo die Annahmen enden** und der Expander **📐 Mathematische Formulierung**.
+Ohne Formeln erklärt der Expander **💬 In einfachen Worten** die Idee. Weiter unten: die Abschnitte **🔬 Experimente**, **🚧 Wo die Annahmen enden** und der Expander **📐 Mathematische Formulierung**.
 """
 )
+
+# erklaerseite:einfach:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/huete-raetsel-erklaert.json, nicht von Hand ändern)
+with st.expander("💬 In einfachen Worten"):
+    st.markdown(
+        """
+Ein Team darf sich vorher eine Regel ausmachen und danach nicht mehr miteinander reden. Die Demo zeigt vier Rätsel mit demselben Trick: Hüte, bei denen jeder tippt oder passt, Hüte in einer Reihe, Hüte mit Summen-Tipps und ein Schachbrett, auf dem eine einzige umgedrehte Münze eine Zahl überträgt.
+
+Der Trick ist eine **abgemachte Prüfsumme**: Jede Person rechnet aus dem, was sie sieht, welcher Wert für das Unsichtbare zu ihr passt. Bei den Hüten, die gleichzeitig tippen oder passen, bleibt der einzelne Tipp ein Wagnis, und gewonnen wird, weil sich die falschen Tipps auf wenige Verteilungen bündeln. Bei der Reihe, den Summen-Hüten und dem Schachbrett trägt die Prüfsumme auf andere Weise. Die Ergebnisse gelten für gleich wahrscheinliche Hutfarben; es sind Rätsel mit festen Annahmen, keine Aussagen über Menschen.
+
+[Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/huete-raetsel-erklaert.html)
+        """
+    )
+# erklaerseite:einfach:end
 
 with st.expander("So funktioniert der Trick: vier Kulissen, eine Idee", expanded=True):
     st.markdown(
@@ -134,11 +147,11 @@ with st.sidebar:
     q_summe = st.slider("Farben q", *bounds("q_summe_slider"), key="q_summe_slider", help="Wie viele Hutfarben es gibt.")
     n_summe = st.slider("Spieler n", *bounds("n_summe_slider"), key="n_summe_slider", help="Wie viele Spieler gleichzeitig tippen. Gewonnen ist, wenn mindestens ein Tipp stimmt.")
     st.header("♟️ Schachbrett")
-    m_brett = st.slider("Bit m (Felder N = 2^m)", *bounds("m_brett_slider"), key="m_brett_slider", help="Das Brett hat N = 2^m Felder; ein umgedrehtes Feld überträgt m Bit.")
+    m_brett = st.slider("Bit t (Felder N = 2^t)", *bounds("m_brett_slider"), key="m_brett_slider", help="Das Brett hat N = 2^t Felder; ein umgedrehtes Feld überträgt t Bit.")
     st.caption(f"Das Brett hat {1 << int(m_brett)} Felder.")
     st.header("🎲 Zufall")
     seed = st.number_input("Zufalls-Seed der Szenen", *bounds("seed_input"), key="seed_input", step=1,
-                           help="Bestimmt die gezogenen Hutverteilungen und das Brett in den Szenen. Die Zahlen der Auswertungen hängen davon nicht ab.")
+                           help="Bestimmt die gezogenen Hutverteilungen und das Brett in den Szenen. Die Zahlen der Auswertungen hängen davon nicht ab, außer bei den Stichproben (lange Reihen, 64-Felder-Brett).")
     st.button("🎲 Neue Szenen ziehen", width="stretch", on_click=randomize_seed)
 
 sync_query_params({"n_hut_slider": int(n_hut), "hat_strategy_select": hat_strategy, "n_reihe_slider": int(n_reihe), "q_reihe_slider": int(q_reihe), "q_summe_slider": int(q_summe),
@@ -215,7 +228,7 @@ st.markdown("## ➕ Summen-Hüte: genau einer liegt richtig")
 st.markdown(
     f"""
 **{settings.n_summe} Spieler**, jeder mit einem Hut in einer von **{settings.q_summe} Farben** (0 … {settings.q_summe - 1}). Alle tippen gleichzeitig auf die eigene Farbe; es gibt kein Passen.
-**Gewonnen** ist, wenn mindestens ein Tipp stimmt. Verabredet wird: Spieler i bekommt die Zielsumme i modulo q und tippt so, dass die **Summe aller Hüte** seine Zielsumme ergäbe.
+**Gewonnen** ist, wenn mindestens ein Tipp stimmt. Verabredet wird: Spieler i (i = 0, …, n − 1) bekommt die Zielsumme i modulo q und tippt so, dass die **Summe aller Hüte** seine Zielsumme ergäbe. Die Tabelle unten zählt die Spieler ab 1: Spieler 1 hat die Zielsumme 0.
 """
 )
 sa = _sums(settings.n_summe, settings.q_summe, settings.seed)
@@ -317,18 +330,28 @@ st.markdown(
 st.markdown("---")
 
 with st.expander("📐 Mathematische Formulierung"):
+    # erklaerseite:lesehilfe:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/huete-raetsel-erklaert.json, nicht von Hand ändern)
     st.markdown(
         r"""
-**Gegeben und gesucht.** Gegeben $n$ Spieler und eine verabredete Strategie; gesucht ist der Anteil der Hutverteilungen, die das Team gewinnt, und eine Obergrenze für jede Strategie.
+**Lesehilfe.** Gegeben sind $n$ Spieler und eine vorab verabredete Strategie; gesucht ist der Anteil der Hutverteilungen, die das Team gewinnt, samt einer Obergrenze für jede Strategie. In der Reihe, bei den Summen-Hüten und auf dem Schachbrett ist gesucht, wie viele Tipps sicher stimmen und wie ein Umdrehen eine Zahl überträgt.
 
 | Symbol | Bedeutung |
 |---|---|
 | $n$, $q$ | Zahl der Spieler (Personen), Zahl der Farben |
 | $h_i \in \{0,\dots,q-1\}$ | Hut von Spieler $i$ |
 | $S=\sum_i h_i \bmod q$ | Prüfsumme aller Hüte |
+| $W$, $L$ | Zahl der gewonnenen und der verlorenen Hutverteilungen |
 | $m = 2^r-1$ | Länge des Hamming-Codes, $m \le n$ |
-| $N = 2^m$ | Felder des Schachbretts (hier $m$ Bit, im Hut-Teil $m$ Spieler) |
+| $N = 2^t$ | Felder des Schachbretts ($t$ Bit) |
+| $a_k$ | Tipp der Person $k$ in der Reihe |
+| $g_i$ | Tipp von Spieler $i = 0, \dots, n-1$ bei den Summen-Hüten |
 
+[Schritt für Schritt erklärt, mit Herleitung und Literatur](https://sebastianhanisch.net/huete-raetsel-erklaert.html#fachleute)
+        """
+    )
+    # erklaerseite:lesehilfe:end
+    st.markdown(
+        r"""
 **Hüte gleichzeitig, Obergrenze.** Bei gleichverteilten Hüten ist jeder Tipp mit Wahrscheinlichkeit $1/2$ richtig. Zählt man über alle $2^n$ Verteilungen, gibt es genauso viele richtige wie falsche Tipps. In einer gewonnenen
 Verteilung gibt es mindestens einen richtigen und keinen falschen Tipp, in einer verlorenen höchstens $n$ falsche. Mit $W$ gewonnenen und $L$ verlorenen Verteilungen folgt
 
@@ -346,15 +369,15 @@ $$a_k = a_1 - \sum_{j>k} h_j - \sum_{j=2}^{k-1} a_j \bmod q.$$
 
 Sind $a_2,\dots,a_{k-1}$ richtig, gilt $a_k = h_k$. Die erste Person ist für jede Sicht in genau einem von $q$ Fällen richtig. Für jede Sicht der ersten Person gibt es eine Farbe, bei der sie falsch liegt (schlechtester Fall höchstens $n-1$), und im Mittel liegt sie mit $1/q$ richtig (Mittel höchstens $n-1+1/q$); die Summe erreicht beides.
 
-**Summen-Hüte.** Spieler $i$ tippt $g_i = (i - \sum_{j\ne i} h_j) \bmod q$, richtig genau dann, wenn $S \equiv i \pmod q$. Für $n \ge q$ gibt es zu jedem Rest einen Spieler, also mindestens einen Treffer. Für $n \le q$: Der Erwartungswert der Zahl richtiger
+**Summen-Hüte.** Spieler $i = 0, \dots, n-1$ tippt $g_i = (i - \sum_{j\ne i} h_j) \bmod q$, richtig genau dann, wenn $S \equiv i \pmod q$ (die Tabelle in der App zählt die Spieler ab 1, also Spieler $i+1$ in der Zeile mit Zielsumme $i \bmod q$). Für $n \ge q$ gibt es zu jedem Rest einen Spieler, also mindestens einen Treffer. Für $n \le q$: Der Erwartungswert der Zahl richtiger
 Tipps ist jeweils $n/q$ und der Gewinnanteil höchstens dieser Erwartungswert, also
 
 $$P(\text{Gewinn}) \le \min\!\left(1,\ \frac{n}{q}\right);$$
 
 die Summe erreicht das. Bei $n=q$ ist der Erwartungswert 1 und es gibt immer mindestens einen Treffer, also **genau einen**.
 
-**Schachbrett.** Mit $S(b)=\bigoplus_{f:\,b_f=1} f$ gilt $S(b \oplus e_j) = S(b) \oplus j$ (Umdrehen von Feld $j$ ändert $S$ um $j$). A dreht $j=S(b)\oplus k$ und erhält $S = k$. Das geht für $N=2^m$, weil die Nummern $0,\dots,N-1$
-genau die $m$-Bit-Zahlen sind. Notwendig: Eine perfekte Strategie färbt die $2^N$ Bretter mit $N$ Farben (Farbe = Gelesenes), und jedes Brett hat unter seinen $N$ Nachbarn jede Farbe genau einmal. Zählt man die Kanten zwischen einer Farbklasse $K$ und
+**Schachbrett.** Mit $S(b)=\bigoplus_{f:\,b_f=1} f$ gilt $S(b \oplus e_j) = S(b) \oplus j$ (Umdrehen von Feld $j$ ändert $S$ um $j$). A dreht $j=S(b)\oplus k$ und erhält $S = k$. Das geht für $N=2^t$, weil die Nummern $0,\dots,N-1$
+genau die $t$-Bit-Zahlen sind. Notwendig: Eine perfekte Strategie färbt die $2^N$ Bretter mit $N$ Farben (Farbe = Gelesenes), und jedes Brett hat unter seinen $N$ Nachbarn jede Farbe genau einmal. Zählt man die Kanten zwischen einer Farbklasse $K$ und
 allen Brettern, so hat jedes Brett genau einen Nachbarn in $K$ und jedes Brett aus $K$ genau $N$ Nachbarn:
 
 $$|K| \cdot N = 2^N \quad\Rightarrow\quad N \mid 2^N,$$
@@ -379,5 +402,5 @@ st.markdown("---")
 st.caption(
     "Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – "
     "Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). "
-    "Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html)."
+    "Mehr zur Reihe: [Teamrätsel: Strategie ohne Verständigung](https://sebastianhanisch.net/konzepte-teamraetsel.html)."
 )
