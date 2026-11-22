@@ -105,7 +105,7 @@ with st.expander("💬 In einfachen Worten"):
         """
 Ein Team darf sich vorher eine Regel ausmachen und danach nicht mehr miteinander reden. Die Demo zeigt vier Rätsel mit demselben Trick: Hüte, bei denen jeder tippt oder passt, Hüte in einer Reihe, Hüte mit Summen-Tipps und ein Schachbrett, auf dem eine einzige umgedrehte Münze eine Zahl überträgt.
 
-Der Trick ist eine **abgemachte Prüfsumme**: Jede Person rechnet aus dem, was sie sieht, welcher Wert für das Unsichtbare zu ihr passt. Bei den Hüten, die gleichzeitig tippen oder passen, bleibt der einzelne Tipp ein Wagnis, und gewonnen wird, weil sich die falschen Tipps auf wenige Verteilungen bündeln. Bei der Reihe, den Summen-Hüten und dem Schachbrett trägt die Prüfsumme auf andere Weise. Die Ergebnisse gelten für gleich wahrscheinliche Hutfarben; es sind Rätsel mit festen Annahmen, keine Aussagen über Menschen.
+Der Trick ist eine **abgemachte Prüfsumme**: Jede Person rechnet aus dem, was sie sieht, welcher Wert für das Unsichtbare zu ihr passt. Bei den Hüten, die gleichzeitig tippen oder passen, bleibt der einzelne Tipp ein Wagnis, und gewonnen wird, weil sich die falschen Tipps auf wenige Verteilungen bündeln. Bei der Reihe, den Summen-Hüten und dem Schachbrett wirkt die Prüfsumme auf andere Weise. Die Ergebnisse gelten für gleich wahrscheinliche Hutfarben; es sind Rätsel mit festen Annahmen, keine Aussagen über Menschen.
 
 [Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/huete-raetsel-erklaert.html)
         """
@@ -322,7 +322,7 @@ st.markdown(
 | **Absprache vorab, nichts währenddessen** | Wer sich währenddessen verständigen darf, spielt ein anderes Rätsel; die Reihe nutzt gerade die laut gesprochenen Tipps als einzigen Kanal. | – |
 | **Gewinn heißt: mindestens ein Rater, alle Rater richtig** | Bei anderer Gewinnregel (z. B. alle müssen raten und richtig liegen, nach dem Gedächtnis die Regel bei Riis, ungeprüft) ändern sich die Werte und der Graph-Teil; hier nicht gerechnet. | Literatur zu „guessing games“ |
 | **Alle Mitglieder rechnen fehlerfrei und kennen dieselbe Verabredung** | Eine einzige falsche Rechnung macht in der Reihe alle Folgenden falsch (folgt aus der Formel, nicht gemessen). | – |
-| **Zählschranke der Hüte (Obergrenze n/(n+1))** | Gilt für zwei Farben und gleichverteilte Hüte; die Zahl der Verteilungen ist bei n = 2, 3, 4 und 7 erreicht, bei n = 5, 6 und 8 liegt die beste Strategie darunter (Tabelle oben). | – |
+| **Obergrenze der Hüte (Zählargument, n/(n+1))** | Gilt für zwei Farben und gleichverteilte Hüte; die Zahl der Verteilungen ist bei n = 2, 3, 4 und 7 erreicht, bei n = 5, 6 und 8 liegt die beste Strategie darunter (Tabelle oben). | – |
 | **Sichtgraph aus Experiment 2** | Nur für die gezeigten Graphen mit höchstens fünf Spielern gerechnet; eine allgemeine Aussage über Graphen ist das nicht. | – |
 """
 )
